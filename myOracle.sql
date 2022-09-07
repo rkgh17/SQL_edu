@@ -22,8 +22,27 @@ create [unique][or replace] index 인덱스명 on 테이블명(컬럼1,......컬럼n);
 drop index 인덱스명
 */
 create unique index ndx_name on student(name);
+select * from user_indexes; --많이 안나옴
+select index_name from user_indexes;
 
+/*
+SYNONYM 
+데이터객체에 별명 붙여주기
 
+create [or replace] synonym 별명 for 테이블;
+drop synonym 별명;
+*/
+
+/*
+SEQUENCE
+일련번호 자동 생성기(number generator)
+*/
+drop table newstd;
+create table newstd(mid number(2) not null, name varchar2(12));
+select * from newstd;
+insert into newstd values(1,'John');
+insert into newstd values(2,'James');
+insert into newstd values(3,'Johanson');
 
 
 /*
