@@ -1,12 +1,12 @@
 /*
 INSERT
-insert into Å×ÀÌºí¸í values(°ª1, °ª2, °ª3....);
+insert into í…Œì´ë¸”ëª… values(ê°’1, ê°’2, ê°’3....);
 
-¿øÇÏ´Â ÄÃ·³¿¡ µ¥ÀÌÅÍ ³Ö±â
-insert into Å×ÀÌºí¸í(ÄÃ·³¸í1, ...ÄÃ·³¸ín) values(°ª1, .... °ªn);
+ì›í•˜ëŠ” ì»¬ëŸ¼ì— ë°ì´í„° ë„£ê¸°
+insert into í…Œì´ë¸”ëª…(ì»¬ëŸ¼ëª…1, ...ì»¬ëŸ¼ëª…n) values(ê°’1, .... ê°’n);
 
-MySQLÀÇ °æ¿ì ÇÑ °¡Áö ¹æ¹ı ´õ Áö¿ø
-insert into Å×ÀÌºí¸í set ÄÃ·³¸í1=°ª1, ...... ÄÃ·³¸ín=°ªn;
+MySQLì˜ ê²½ìš° í•œ ê°€ì§€ ë°©ë²• ë” ì§€ì›
+insert into í…Œì´ë¸”ëª… set ì»¬ëŸ¼ëª…1=ê°’1, ...... ì»¬ëŸ¼ëª…n=ê°’n;
 */
 create table student(
 name varchar2(12) not null,
@@ -18,31 +18,31 @@ english number(3) default 0,
 math number(3) default 0, 
 korean number(3) default 0);
 select * from student;
-insert into student values('È²ÁöÈÆ', 'M','19961001','01055554444','¼­¿ï','100','100','100');
-insert into student values('È²Çı¸°', 'F','19941001','01066664444','¼­¿ï','100','100','100');
+insert into student values('í™©ì§€í›ˆ', 'M','19961001','01055554444','ì„œìš¸','100','100','100');
+insert into student values('í™©í˜œë¦°', 'F','19941001','01066664444','ì„œìš¸','100','100','100');
 
-insert into student (name, gender, birthday, mobile, area) values('±è¿ë¿î','M','19960101','01011112222','¼­¿ï');
-insert into student (name, birthday, mobile, area) values('½ÅÇö¿ì','19960101','01022221111','¼­¿ï');
+insert into student (name, gender, birthday, mobile, area) values('ê¹€ìš©ìš´','M','19960101','01011112222','ì„œìš¸');
+insert into student (name, birthday, mobile, area) values('ì‹ í˜„ìš°','19960101','01022221111','ì„œìš¸');
 
 /*
 DELETE
-delete from Å×ÀÌºí¸í where Á¶°Ç¹®[ÄÃ·³¸í ºñ±³¿¬»êÀÚ °ª]
+delete from í…Œì´ë¸”ëª… where ì¡°ê±´ë¬¸[ì»¬ëŸ¼ëª… ë¹„êµì—°ì‚°ì ê°’]
 ex) delete from student where name='John';
 */
 
-delete from student where name='È²ÁöÈÆ';
+delete from student where name='í™©ì§€í›ˆ';
 select * from student;
-delete from student; --Å×ÀÌºí °ª ÀüÃ¼»èÁ¦>ÁÖÀÇ
+delete from student; --í…Œì´ë¸” ê°’ ì „ì²´ì‚­ì œ>ì£¼ì˜
 
 /*
 UPDATE
-update Å×ÀÌºí¸í set ÄÃ·³¸í1=°ª1, ...... ÄÃ·³¸ín=°ªn where Á¶°Ç¹®[ÄÃ·³¸í ºñ±³¿¬»êÀÚ °ª]
+update í…Œì´ë¸”ëª… set ì»¬ëŸ¼ëª…1=ê°’1, ...... ì»¬ëŸ¼ëª…n=ê°’n where ì¡°ê±´ë¬¸[ì»¬ëŸ¼ëª… ë¹„êµì—°ì‚°ì ê°’]
 ex) update student set mobile='00000000' where name = 'John';
 
-null°ªÀÏ¶§
-where ÄÃ·³¸í IS NULL;
-where ÄÃ·³¸í IS NOT NULL;
+nullê°’ì¼ë•Œ
+where ì»¬ëŸ¼ëª… IS NULL;
+where ì»¬ëŸ¼ëª… IS NOT NULL;
 */
-update student set mobile='00000000', area='°æ±â' where name = '±è¿ë¿î';
-update student set math=100; -- matheÇàÀÇ °ª ÀüÃ¼ 100
+update student set mobile='00000000', area='ê²½ê¸°' where name = 'ê¹€ìš©ìš´';
+update student set math=100; -- matheí–‰ì˜ ê°’ ì „ì²´ 100
 select * from student;
