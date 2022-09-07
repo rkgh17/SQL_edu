@@ -61,3 +61,16 @@ select emp_name, salary from employees where salary between 5800 and 7000;
 select emp_name, salary from employees where salary in (3000,4000,5000,6000,7000);
 select emp_name, salary from employees where salary=any (3000,4000,5000,6000,7000);
 select emp_name, salary from employees where salary=some (3000,4000,5000,6000,7000); -- 위 셋은 같은 결과
+
+select emp_name from employees order by emp_name;
+select emp_name from employees where emp_name like 'John%';
+select emp_name from employees where emp_name like '%son %';
+select emp_name from employees where emp_name like '% S%';
+
+
+/*
+LIKE    % : 0개 이상의 문자
+         _ : 1개 문자 단일
+*/
+select emp_name from employees where (emp_name like '%y%' OR emp_name like '%Y%');
+select emp_name from employees where REGEXP_LIKE(emp_name, 'Y|y'); -- 위아래 동일
