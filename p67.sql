@@ -109,3 +109,15 @@ name varchar2(12) not null, gender char(1) default 'F'
 insert into student values('John','M');
 insert into student(name) values('John');
 select * from student;
+
+--테이블 복사
+/*
+CREATE TABLE 테이블명 AS SELECT 컬럼1,....컬럼n FROM 복사할 테이블명
+
+MYSQL은 AS안들어감
+*/
+create table stu1 AS
+select * from student;
+
+create table stu2 AS
+select name from student; -- 특정 컬럼만 따와서 복사 가능
