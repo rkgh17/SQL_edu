@@ -36,6 +36,13 @@ drop synonym 별명;
 /*
 SEQUENCE
 일련번호 자동 생성기(number generator)
+
+CREATE SEQUENCE 시퀀스명
+START WITH 시작숫자
+INCREMENT BY 증감숫자
+
+시퀀스명.nextval -> 시퀀스번호 가져오기
+select 시퀀스명.currval from dual -> 마지막 시퀀스 번호 확인
 */
 drop table newstd;
 create table newstd(mid number(2) not null, name varchar2(12));
@@ -43,6 +50,17 @@ select * from newstd;
 insert into newstd values(1,'John');
 insert into newstd values(2,'James');
 insert into newstd values(3,'Johanson');
+
+drop table newstd;
+create table newstd(mid number(2) not null, name varchar2(12));
+create sequence seq_mid start with 1 increment by 1;
+drop sequence seq_mid;
+insert into newstd values(seq_mid.nextval, 'John');
+insert into newstd values(seq_mid.nextval, 'James');
+insert into newstd values(seq_mid.nextval, 'Johanson');
+insert into newstd values(seq_mid.nextval, 'Jane');
+select * from newstd;
+select seq_mid.currval from dual;
 
 
 /*
