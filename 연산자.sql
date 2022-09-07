@@ -1,10 +1,14 @@
 /*
-¿¬»êÀÚ
+ì—°ì‚°ì
 
--»ê¼ú¿¬»êÀÚ : +, -, * (asterisk), /, || (¹®ÀÚ¿­ ¿¬°á¿¬»êÀÚ)
--ºñ±³¿¬»êÀÚ : =, !=, <>, <, >=, <=m ISNULL, is not null
--³í¸®¿¬»êÀÚ : and, or, not
-ÁıÇÕ¿¬»êÀÚ : union/union all, intersect, minus : ÇÕÁıÇÕ(Áßº¹¿©ºÎ), ±³ÁıÇÕ, Â÷ÁıÇÕ
+-ì‚°ìˆ ì—°ì‚°ì : +, -, * (asterisk), /, || (ë¬¸ìì—´ ì—°ê²°ì—°ì‚°ì)
+-ë¹„êµì—°ì‚°ì : =, !=, <>, <, >=, <=m ISNULL, is not null
+-ë…¼ë¦¬ì—°ì‚°ì : and, or, not
+-ì§‘í•©ì—°ì‚°ì : union/union all, intersect, minus : í•©ì§‘í•©(ì¤‘ë³µì—¬ë¶€), êµì§‘í•©, ì°¨ì§‘í•©
+
+ì»¬ëŸ¼ëª… BETWEEN A AND B -> ì»¬ëŸ¼ëª…>=A AND ì»¬ëŸ¼ëª…<=B
+ì»¬ëŸ¼ëª… IN(ê°’1, ..... , ê°’n) -> ì»¬ëŸ¼ëª…=ê°’1 or ....... or ì»¬ëŸ¼ëª… = ê°’n
+                        -> ì»¬ëŸ¼ëª… = any(ê°’1, ..., ê°’n)
 */
 select 3+5 from dual;
 select 3-5 from dual;
@@ -24,7 +28,7 @@ select emp_name, salary, hire_date from employees where salary<5000 and hire_dat
 
 /*
 SELECT
-select ÄÃ·³¸í1,....,ÄÃ·³¸ín from Å×ÀÌºí¸í1,.....,Å×ÀÌºí¸ín;
+select ì»¬ëŸ¼ëª…1,....,ì»¬ëŸ¼ëª…n from í…Œì´ë¸”ëª…1,.....,í…Œì´ë¸”ëª…n;
 ex)
-select * from student; / *student Å×ÀÌºíÀÇ ¸ğµç ÄÃ·³°ú °ªÀ» ÀĞ¾î¼­ º¸¿©´Ş¶ó
+select * from student; / *student í…Œì´ë¸”ì˜ ëª¨ë“  ì»¬ëŸ¼ê³¼ ê°’ì„ ì½ì–´ì„œ ë³´ì—¬ë‹¬ë¼
 */
