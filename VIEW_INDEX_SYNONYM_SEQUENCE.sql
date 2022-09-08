@@ -1,52 +1,55 @@
 /*
 VIEW
-º¹ÀâÇÑ Á¶°ÇÀÇ select¹®ÀÌ ¹İº¹ÀûÀ¸·Î »ç¿ëµÉ ¶§, ¹ø°Å·Î¿òÀ» ÁÙ¿©ÁÖ±â À§ÇØ¼­
+ë³µì¡í•œ ì¡°ê±´ì˜ selectë¬¸ì´ ë°˜ë³µì ìœ¼ë¡œ ì‚¬ìš©ë  ë•Œ, ë²ˆê±°ë¡œì›€ì„ ì¤„ì—¬ì£¼ê¸° ìœ„í•´ì„œ
 
-create or replace view ºä¸í as select ¹®Àå;
-¹®Àå >    ÄÃ·³¸í1,.....ÄÃ·³¸ín
-            where Á¶°Ç¹®
+create or replace view ë·°ëª… as select ë¬¸ì¥;
+ë¬¸ì¥ >    ì»¬ëŸ¼ëª…1,.....ì»¬ëŸ¼ëª…n
+            where ì¡°ê±´ë¬¸
 
-drop view ºä¸í;
+drop view ë·°ëª…;
 */
 select emp_name, salary from employees; 
 create or replace view worker as select emp_name, salary from employees;
 select * from worker;
 drop view worker;
-select view_name from user_views; -- »ç¿ëÀÚ°¡ ¸¸µç ºä
+select view_name from user_views; -- ì‚¬ìš©ìê°€ ë§Œë“  ë·°
 
 /*
 INDEX
-DATAÀÇ °Ë»ö¼Óµµ¸¦ ºü¸£°Ô ÇÏ±â À§ÇØ »ç¿ë
+DATAì˜ ê²€ìƒ‰ì†ë„ë¥¼ ë¹ ë¥´ê²Œ í•˜ê¸° ìœ„í•´ ì‚¬ìš©
 
-create [unique][or replace] index ÀÎµ¦½º¸í on Å×ÀÌºí¸í(ÄÃ·³1,......ÄÃ·³n);
-drop index ÀÎµ¦½º¸í
+create [unique][or replace] index ì¸ë±ìŠ¤ëª… on í…Œì´ë¸”ëª…(ì»¬ëŸ¼1,......ì»¬ëŸ¼n);
+drop index ì¸ë±ìŠ¤ëª…
 */
 create unique index ndx_name on student(name);
-select * from user_indexes; --¸¹ÀÌ ¾È³ª¿È
+select * from user_indexes; --ë§ì´ ì•ˆë‚˜ì˜´
 select index_name from user_indexes;
 
 /*
 SYNONYM 
-µ¥ÀÌÅÍ°´Ã¼¿¡ º°¸í ºÙ¿©ÁÖ±â
+ë°ì´í„°ê°ì²´ì— ë³„ëª… ë¶™ì—¬ì£¼ê¸°
 
-create [or replace] synonym º°¸í for Å×ÀÌºí;
-drop synonym º°¸í;
+create [or replace] synonym ë³„ëª… for í…Œì´ë¸”;
+drop synonym ë³„ëª…;
 */
 
 /*
 SEQUENCE
-ÀÏ·Ã¹øÈ£ ÀÚµ¿ »ı¼º±â(number generator)
+ì¼ë ¨ë²ˆí˜¸ ìë™ ìƒì„±ê¸°(number generator)
 
-CREATE SEQUENCE ½ÃÄö½º¸í
-START WITH ½ÃÀÛ¼ıÀÚ
-INCREMENT BY Áõ°¨¼ıÀÚ
-(NO)MINVALUE / MINVALUE ÃÖ¼Ú°ª
-(NO)MAXVALUE / MAXVALUE ÃÖ´ë°ª
+CREATE SEQUENCE ì‹œí€€ìŠ¤ëª…
+START WITH ì‹œì‘ìˆ«ì
+INCREMENT BY ì¦ê°ìˆ«ì
+(NO)MINVALUE / MINVALUE ìµœì†Ÿê°’
+(NO)MAXVALUE / MAXVALUE ìµœëŒ€ê°’
 (NO)CYCLE / CYCLE
 
+MySQL
+: auto increment
 
-½ÃÄö½º¸í.nextval -> ½ÃÄö½º¹øÈ£ Áõ°¨
-select ½ÃÄö½º¸í.currval from dual -> ¸¶Áö¸· ½ÃÄö½º ¹øÈ£ È®ÀÎ
+
+ì‹œí€€ìŠ¤ëª….nextval -> ì‹œí€€ìŠ¤ë²ˆí˜¸ ì¦ê°
+select ì‹œí€€ìŠ¤ëª….currval from dual -> ë§ˆì§€ë§‰ ì‹œí€€ìŠ¤ ë²ˆí˜¸ í™•ì¸
 */
 drop table newstd;
 create table newstd(mid number(2) not null, name varchar2(12));
@@ -67,11 +70,11 @@ select * from newstd;
 select seq_mid.currval from dual;
 
 CREATE SEQUENCE S1 START WITH 10 INCREMENT BY -2 MAXVALUE 10;
-SELECT S1.NEXTVAL FROM DUAL; -- ÀÌ°Í¸¸ ÃÄµµ Áõ°¨Àû¿ë
+SELECT S1.NEXTVAL FROM DUAL; -- ì´ê²ƒë§Œ ì³ë„ ì¦ê°ì ìš©
 
 /*
 SELECT
-select ÄÃ·³¸í1,....,ÄÃ·³¸ín from Å×ÀÌºí¸í1,.....,Å×ÀÌºí¸ín;
+select ì»¬ëŸ¼ëª…1,....,ì»¬ëŸ¼ëª…n from í…Œì´ë¸”ëª…1,.....,í…Œì´ë¸”ëª…n;
 ex)
-select * from student; / *student Å×ÀÌºíÀÇ ¸ğµç ÄÃ·³°ú °ªÀ» ÀĞ¾î¼­ º¸¿©´Ş¶ó
+select * from student; / *student í…Œì´ë¸”ì˜ ëª¨ë“  ì»¬ëŸ¼ê³¼ ê°’ì„ ì½ì–´ì„œ ë³´ì—¬ë‹¬ë¼
 */

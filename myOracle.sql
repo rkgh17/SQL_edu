@@ -1,76 +1,15 @@
-/*
-연산자
+--BUITIN FUNCTION 문자
 
--산술연산자 : +, -, * (asterisk), /, || (문자열 연결연산자)
--비교연산자 : =, !=, <>, <, >=, <=m ISNULL, is not null
--논리연산자 : and, or, not
--집합연산자 : union/union all, intersect, minus : 합집합(중복여부), 교집합, 차집합
-*/
-select 3+5 from dual;
-select 3-5 from dual;
-select 3*5 from dual;
-select 3/5 from dual;
+-- INITCAP : 첫문자 대문자로
+SELECT INITCAP('HWANG JI HOON') FROM DUAL;
 
-select salary from employees;
-select salary, salary*1.1 from employees;
-select emp_name,salary from employees where salary*2>20000;
-select '['||emp_name||']'
-from employees;
+-- UPPER : 전부 대문자
+SELECT UPPER('HWANG JI HOON') FROM DUAL;
 
-select salary from employees;
-select * from employees where salary is not null;
-select emp_name, salary, hire_date from employees where salary<5000 and hire_date< '05/01/01';
+-- LOWER : 소문자
+SELECT LOWER('HWANG JI HOON') FROM DUAL;
 
-/*
-CASE
-: SELECT 안에만 사용(WHERE에서 사용 안함)
+-- CONCAT : 문자열 연결. ||과 비슷함
+SELECT 'GOOD' || 'MORNING' || 'VIETNAM' FROM DUAL;
+SELECT CONCAT(CONCAT('GOOD','MORNING'),'VIETNAM') FROM DUAL; --위의 두 문장은 동일결과. 사실상 ||이 더 편리
 
-CASE WHEN 조건1 THEN 값1 WHEN 조건2 THEN 값2 ........ ELSE 기타 값 END
-*/
-
-/*
-SELECT
-select 컬럼명1,....,컬럼명n from 테이블명1,.....,테이블명n;
-ex)
-select * from student; / *student 테이블의 모든 컬럼과 값을 읽어서 보여달라
-
-컬럼명 AS ALIASNAME
-*/
-select * from employees;
-select employee_id,emp_name,salary from employees where salary>=5000 and salary<10000;
-select employee_id,emp_name,salary from employees where salary BETWEEN 5000 and 9999;
-select emp_name,manager_id from employees;
-select emp_name,manager_id from employees where manager_id is null;
-select emp_name, manager_id from employees where manager_id = '100';
-
-COMMIT;
-
-SELECT EMPLOYEE_ID AS EID, SALARY, 
-    CASE  WHEN SALARY<=5000 THEN '    C' 
-            WHEN SALARY>=5000 AND SALARY<=10000 THEN '    B' 
-            ELSE '    A' END AS GRADE
-    FROM EMPLOYEES; -- MYSQL은 AS필요없음
-
-CREATE TABLE STS AS
-SELECT EMPLOYEE_ID AS EID, EMP_NAME AS ENAME, SALARY FROM EMPLOYEES;
-SELECT * FROM STS;
-
-SELECT SALARY FROM EMPLOYEES WHERE NOT SALARY>10000;
-select emp_name, salary from employees where salary between 5800 and 7000;
-
-select emp_name, salary from employees where salary in (3000,4000,5000,6000,7000);
-select emp_name, salary from employees where salary=any (3000,4000,5000,6000,7000);
-select emp_name, salary from employees where salary=some (3000,4000,5000,6000,7000); -- 위 셋은 같은 결과
-
-select emp_name from employees order by emp_name;
-select emp_name from employees where emp_name like 'John%';
-select emp_name from employees where emp_name like '%son %';
-select emp_name from employees where emp_name like '% S%';
-
-
-/*
-LIKE    % : 0개 이상의 문자
-         _ : 1개 문자 단일
-*/
-select emp_name from employees where (emp_name like '%y%' OR emp_name like '%Y%');
-select emp_name from employees where REGEXP_LIKE(emp_name, 'Y|y'); -- 위아래 동일
