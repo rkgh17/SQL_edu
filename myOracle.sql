@@ -1,25 +1,36 @@
-/* GROUP BY / HAVING
-
-GROUP BY : 특정값을 가진 컬럼끼리 묵는다.
-               ☆집계함수와 같이 써야함.
-
-HAVING : GROUP BY의 결과에 조건을 추가.
+/* 집합연산자
 */
-SELECT JOB_ID, COUNT(*) FROM EMPLOYEES GROUP BY JOB_ID;
-SELECT JOB_ID, COUNT(*), SUM(SALARY) FROM EMPLOYEES GROUP BY JOB_ID;
--- SELECT GU_NAME, SUM(*) FROM SEOUL_CITIZN GROUP BY GU_NAME;
 
--- 매니저 사번별 부하직원 숫자
-SELECT MANAGER_ID AS M_ID,  COUNT(*) AS 부하직원 FROM EMPLOYEES GROUP BY MANAGER_ID ORDER BY M_ID ;
+create table exp_goods (
+country varchar2(10),seq number,goods varchar2(80)
+);
+insert into exp_goods values('한국',1,'원유제외석유류');
+insert into exp_goods values('한국',2,'자동차');
+insert into exp_goods values('한국',3,'전자집적회로');
+insert into exp_goods values('한국',4,'선박');
+insert into exp_goods values('한국',5,'LCD');
+insert into exp_goods values('한국',6,'자동차부품');
+insert into exp_goods values('한국',7,'휴대전화');
+insert into exp_goods values('한국',8,'환식탄화수소');
+insert into exp_goods values('한국',9,'무선송신기디스플레이부속품');
+insert into exp_goods values('한국',10,'철또는비합금강');
 
---월급별 직원숫자
-SELECT SALARY, COUNT(*) FROM employees GROUP BY SALARY ORDER BY SALARY;
+create table exp_goods_japan (
+country varchar2(10),seq number,goods varchar2(80)
+);
+select * from exp_goods_japan;
+insert all into exp_goods_japan values ('일본','1','자동차') 
+into exp_goods_japan values ('일본','2','자동차부품')
+into exp_goods_japan values ('일본','3','전자집적회로')
+into exp_goods_japan values ('일본','4','선박')
+into exp_goods_japan values ('일본','5','반도체웨이퍼')
+into exp_goods_japan values ('일본','6','화물차')
+into exp_goods_japan values ('일본','7','원유제외석유류')
+into exp_goods_japan values ('일본','8','건설기계')
+into exp_goods_japan values ('일본','9','다이오드트랜지스터')
+into exp_goods_japan values ('일본','10','기계류')
+select * from dual;
 
--- 부서코드별 월급합계
-SELECT DEPARTMENT_ID AS 부서코드, SUM(SALARY) AS 합계 FROM EMPLOYEES GROUP BY DEPARTMENT_ID ORDER BY 부서코드;
 
---HAVING
--- 매니저 사번별 한명보다 많은 부하직원 숫자
-SELECT * FROM employees;
-SELECT MANAGER_ID AS M_ID,  COUNT(*) AS 부하직원 FROM EMPLOYEES GROUP BY MANAGER_ID HAVING COUNT(*)>1 ORDER BY M_ID ;
-
+select * from exp_goods_korea;
+select * from exp_goods_japan;
