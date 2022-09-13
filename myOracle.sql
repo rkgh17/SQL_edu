@@ -67,3 +67,23 @@ LEFT OUTER
 RIGHT OUTER
 FULL OUTER
 */
+
+CREATE TABLE A (C1 VARCHAR2(4), C2 VARCHAR2(4));
+CREATE TABLE B (C3 VARCHAR2(4), C4 VARCHAR2(4));
+InSERT INTO A VALUES('5','c');
+InSERT INTO B VALUES('e','y3');
+select * from a;
+select * from b;
+
+-- 오라클의 외부조인은 (+)
+select * from a, b where a.c2=b.c3; -- 누락되는 값이 있음
+select * from a, b where a.c2=b.c3 (+); -- LEFT OUTER
+select * from a, b where a.c2 (+) = b.c3 ; -- RIGHT OUTER
+select * from a, b where a.c2 (+) = b.c3 (+) ; -- FULL OUTER
+
+/*
+ANSI STYLE
+SELECT ~
+FROM A LEFT OUTER JOIN B
+ON A.C2 = B.C4
+*/
