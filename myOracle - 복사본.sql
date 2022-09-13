@@ -3,10 +3,10 @@
 /*
 INNER JOIN
 
-EQUI 동등조인 : =
-SEMI 세미조인 : <,> /IN, BETWEEN
-ANTI 안티조인 : !=
-SELF 셀프조인 : 같은 테이블을 조인
+EQUI 동등조인 =
+SEMI 세미조인 IN, BETWEEN
+ANTI 안티조인 !=
+SELF 셀프조인 같은 테이블을 조인
 */
 
 -- EQUI JOIN
@@ -22,10 +22,6 @@ FROM EMPLOYEES a, DEPARTMENTS b
 WHERE a.DEPARTMENT_ID = b.DEPARTMENT_ID;
 
 
-/*사번, 이름, 직위명*/
-SELECT A.EMPLOYEE_ID EID , A.EMP_NAME ENAME , A.JOB_ID JOBID
-FROM EMPLOYEES A, JOBS B
-WHERE A.JOB_ID = B.JOB_ID;
 /*
 OUTER JOIN
 
