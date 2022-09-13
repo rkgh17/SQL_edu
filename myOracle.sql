@@ -23,9 +23,22 @@ WHERE a.DEPARTMENT_ID = b.DEPARTMENT_ID;
 
 
 /*사번, 이름, 직위명*/
-SELECT A.EMPLOYEE_ID EID , A.EMP_NAME ENAME , A.JOB_ID JOBID
+SELECT A.EMPLOYEE_ID EID , A.EMP_NAME ENAME , b.job_title
 FROM EMPLOYEES A, JOBS B
 WHERE A.JOB_ID = B.JOB_ID;
+
+--3중조인
+SELECT A.EMPLOYEE_ID EID , A.EMP_NAME ENAME , b.job_title 직위명, c.department_name 부서
+FROM EMPLOYEES A, JOBS B, departments c
+WHERE A.JOB_ID = B.JOB_ID and a.department_id=c.department_id
+order by eid;
+
+-- 제품명, 고객명, 판매방식, 판매직원, 판매일자
+SELECT A.PROD_NAME 제품명, B.CUST_NAME 고객명, C.CHANNEL_DESC 판매방식, D.EMP_NAME 판매직원, E.SALES_DATE 판매날짜
+FROM PRODUCTS A, CUSTOMERS B, CHANNELS C, EMPLOYEES D, sales E
+WHERE A.PROD_ID = E.PROD_ID AND B.CUST_ID = E.CUST_ID AND C.CHANNEL_ID = e.channel_id AND D.EMPLOYEE_ID = e.employee_id;
+
+
 /*
 OUTER JOIN
 
