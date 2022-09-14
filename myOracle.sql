@@ -1,29 +1,32 @@
-/* PLSQL 제어문
+/* PLSQL 사용자 정의 함수
 
-FOR문
-
-FOR 인덱스변수 IN [FEVERSE] 초깃값..최종값
-LOOP
-    처리문;
-END LOOP;
+CREATE OR REPLACE FUNTION 함수명(매개변수1 데이터타입, 매개변수 2 데이터타입, ...)
+RETURN (반환값의) 데이터타입;
+IS[AS]
+    변수, 상수 등 선언
+BEGIN
+     실행부
+     RETURN 반환값;
+[EXCEPTION 예외처리부]
+END [함수이름];
 
 */
 
---구구단 2단
-DECLARE
-BEGIN
-    FOR I IN 1..9
-    LOOP
-        DBMS_OUTPUT.PUT_LINE('2 * ' ||I||' = '||2*I);
-    END LOOP;
-END;
+CREATE OR REPLACE FUNCTION showLevel(sal employees.salary%type)
+return varchar2
+is
+    str varchar2(80);
+begin
+    if sal between 1 and 3000 then
+        str:='하위';
+    elsif sal between 3001 and 6000 then
+        str:='중위';
+    elsif sal between 6001 and 10000 then
+        str:='상위';
+    else
+        str:='최상위';
+    end if;
+    return str;
+end;
 /
-
-DECLARE
-BEGIN
-    FOR I IN REVERSE 1..9
-    LOOP
-        DBMS_OUTPUT.PUT_LINE('2 * ' ||I||' = '||2*I);
-    END LOOP;
-END;
-/
+select emp_name, salary, showlevel(salary) from employees;
