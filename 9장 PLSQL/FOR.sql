@@ -7,6 +7,11 @@ LOOP
     처리문;
 END LOOP;
 
+
+CONTINUE문
+
+CONTINUE WHEN 조건
+
 */
 
 --구구단 2단
