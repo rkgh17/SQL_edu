@@ -1,21 +1,27 @@
 /* PLSQL 제어문
 
-0번 이상 실행
-WHILE문
+CASE
 
-WHILE 조건
-LOOP
-    실행문;
-END LOOP;
+<1>
+CASE 표현식
+    WHEN 결과1 THEN
+            처리문1;
+    WHEN 결과2 THEN
+            처리문2;
+    ...
+    ELSE
+            기타 처리문;
+END CASE;
 
-LOOP문
-
-1번 이상 실행
-LOOP
-    실행문;
-    EXIT [WHEN 조건];
-END LOOP;
-
+<2>
+CASE WHEN 표현식1 THEN
+                처리문1;
+        WHEN 표현식2 THEN
+                처리문2;
+        ...
+        ELSE
+                기타 처리문;
+END CASE;
 */
 
 DECLARE
