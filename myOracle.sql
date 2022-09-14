@@ -72,4 +72,37 @@ ORDER BY 고객ID;
 이름2 부서명*/
 SELECT EMP_NAME 직원명단, DEPARTMENT_NAME 부서명
 FROM EMPLOYEES A, (SELECT * FROM DEPARTMENTS WHERE PARENT_ID IS NULL) B
-WHERE A.DEPARTMENT_ID = B.DEPARTMENT_ID;
+WHERE A.DEPARTMENT_ID = B.DEPARTMENT_ID; -- 내답
+
+select a.emp_name, department_name
+from employees a, departments b
+where a.department_id in (select department_id from departments where parent_id is null)
+and a.department_id = b.department_id;
+
+select a.emp_name, b.department_name
+from employees a, (select department_id, department_name
+                                from departments
+                                where parent_id is null) b
+where a.department_id = b.department_id;                         
+
+commit;
+
+--상위부서번호가 90인 사람들의 평균 급여
+select a.department_id, avg(salary)
+from employees a
+where a.department_id in (select department_id
+                                    from departments
+                                    where parent_id = 90)
+group by a.department_id;
+
+update employees a
+set a.salary = (select sal
+                    from (select b.department_id, avg(c.salary) as sal
+                                from departments b, employees c
+                                where b.parent_id = 90
+                                        and b.department_id = c.department_id
+                                group by b.department_id) d
+                                where a.department_id = d.department_id)
+where a.department_id in (select department_id
+                                    from departments
+                                    where parent_id = 90);                                
