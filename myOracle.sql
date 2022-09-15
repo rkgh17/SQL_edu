@@ -1,5 +1,6 @@
 /* CURSOR : SQL실행 결과가 저장된 메모리의 특별한 지역/위치
                 (SELECT)
+                
 묵시적(implicit) 커서 : 자동으로 생성되는 커서
 SQL%FOUND : SELECT 결과로 1개 이상이 조회되면 TRUE
 SQL%NOTFOUND : SELECT 결과가 없으면 TRUE
@@ -7,6 +8,11 @@ SQL%ROWCOUNT : SELECT시 나온 집합의 로우 수 반환
 SQL%ISOPEN
 
 명시적(explicit) 커서 : PL/SQL코드로 의도적으로 만든 커서
+
+1. 커서 언언
+2. 커서 열기 : OPEN
+3. 커서에 저장된 데이터 사용 : FETCH
+4. 커서 닫기
 */
 
 CREATE TABLE MEMBER(
@@ -27,7 +33,6 @@ BEGIN
     END IF;
 END;
 /
-
 
 DECLARE
     VS_NAME EMPLOYEES.EMP_NAME%TYPE;
@@ -55,5 +60,60 @@ BEGIN
         IF SQL%NOTFOUND THEN
             DBMS_OUTPUT.PUT_LINE('CANNOT FOUND');
         END IF;
+END;
+/
+
+
+DECLARE
+    CURSOR C1(a number, b number) -- 1. 커서 선언
+    IS
+        SELECT EMP_NAME FROM EMPLOYEES WHERE SALARY BETWEEN a and b;
+    VS_NAME EMPLOYEES.EMP_NAME%TYPE;
+BEGIN
+    OPEN C1(0,3000) ; -- 2. 커서 열기
+    LOOP
+        FETCH C1 INTO VS_NAME; -- 3. 데이터 사용
+        EXIT WHEN C1%NOTFOUND;
+        DBMS_OUTPUT.PUT_LINE(VS_NAME);
+    END LOOP;
+    CLOSE C1; -- 4. 커서 닫기
+END;
+/
+
+DECLARE
+    CURSOR C2(a number, b number) -- 1. 커서 선언
+    IS
+        SELECT EMP_NAME FROM EMPLOYEES WHERE SALARY BETWEEN a and b;
+    VS_NAME EMPLOYEES.EMP_NAME%TYPE;
+BEGIN
+    OPEN C2(0,3000) ; -- 2. 커서 열기
+    LOOP
+        FETCH C2 INTO VS_NAME; -- 3. 데이터 사용
+        EXIT WHEN C2%NOTFOUND;
+        DBMS_OUTPUT.PUT_LINE('EMPNAME='||VS_NAME);
+    END LOOP;
+    CLOSE C2; -- 4. 커서 닫기
+END;
+/
+
+--과제 : 부서명, 부서별 인원수, 월급합계 ->
+DECLARE
+    VS_NAME DEPARTMENTS.DEPARTMENT_NAME%TYPE;
+    VS_COUNT NUMBER;
+    VS_SUM NUMBER;
+    CURSOR A1
+    IS
+        SELECT B.DEPARTMENT_NAME, COUNT(A.DEPARTMENT_ID), SUM(A.SALARY) 
+            FROM EMPLOYEES A, DEPARTMENTS B 
+            WHERE A.DEPARTMENT_ID = B.DEPARTMENT_ID
+            GROUP BY B.DEPARTMENT_NAME;
+BEGIN
+    OPEN A1;
+    LOOP
+        FETCH A1 INTO VS_NAME, VS_COUNT, VS_SUM;
+        EXIT WHEN A1%NOTFOUND;
+        DBMS_OUTPUT.PUT_LINE('부서명 : '||VS_NAME||' / 인원수 : '||VS_COUNT||'명 / 월급 합계 : '||VS_SUM);
+    END LOOP;
+    CLOSE A1;
 END;
 /
