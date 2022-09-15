@@ -51,3 +51,4 @@ END;
 EXECUTE getSum(90);
 
 select * from user_source where type='PROCEDURE';
+s
