@@ -1,79 +1,59 @@
-/* 트랜잭션
-Transaction 시작(암묵적)
-- SQLPlus / SQL Developer 실행시
-- COMMIT/ROLLBACK 실행후
+/* CURSOR : SQL실행 결과가 저장된 메모리의 특별한 지역/위치
+                (SELECT)
+묵시적(implicit) 커서 : 자동으로 생성되는 커서
+SQL%FOUND : SELECT 결과로 1개 이상이 조회되면 TRUE
+SQL%NOTFOUND : SELECT 결과가 없으면 TRUE
+SQL%ROWCOUNT : SELECT시 나온 집합의 로우 수 반환
+SQL%ISOPEN
 
-Transaction 종룍(암묵적)
-- SQLPlus / SQL Developer 종료(자동 COMMIT실행)
-- SQLPlus / SQL Developer 비정상 종료 (ROLLBAKC)
-=> 정전, 윈도우 비정상종료
-
-Transaction에 포함되지 않는 SQL문
-: DDL (CREATE / DROP / ALTER / TRANCATE / GRANT / REVOKE)
-
-ROLLBACK
-: COMMIT된 상황으로 되돌아감.
-
-SAVEPOINT 레이블
-ROLLBACK [to 레이블];
+명시적(explicit) 커서 : PL/SQL코드로 의도적으로 만든 커서
 */
 
-/* 예외처리
-DECLARE
-BEGIN
-    실행문;
-    EXCEPTION 
-    WHEN 예외종류 THEN
-        예외처리 구문;
-    ...
-    WHEN OTHERS THEN 
-        예외처리 구문N;
-*/
+CREATE TABLE MEMBER(
+    NAME VARCHAR2(80),
+    MOBLIE VARCHAR2(32)
+);
+SELECT ROWNUM, ROWID /*묵시적*/ , NAME, MOBLIE FROM MEMBER;
 
---오류
 DECLARE
-    VI_NUM NUMBER :=0;
+    VS_NAME EMPLOYEES.EMP_NAME%TYPE;
 BEGIN
-    VI_NUM := 10/0;
-    DBMS_OUTPUT.PUT_LINE('SUCCESS');
+    SELECT EMP_NAME INTO VS_NAME FROM EMPLOYEES
+    WHERE MANAGER_ID IS NULL;
+    IF SQL%FOUND THEN
+        DBMS_OUTPUT.PUT_LINE(VS_NAME);
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('CANNOT FOUND');
+    END IF;
+END;
+/
+
+
+DECLARE
+    VS_NAME EMPLOYEES.EMP_NAME%TYPE;
+BEGIN
+    SELECT EMP_NAME INTO VS_NAME FROM EMPLOYEES
+    WHERE MANAGER_ID =10000; -- ERROR
+    DBMS_OUTPUT.PUT_LINE(VS_NAME);
     
     EXCEPTION WHEN OTHERS THEN
-        DBMS_OUTPUT.PUT_LINE('오류발생 - Divided by ZERO');
-        DBMS_OUTPUT.PUT_LINE('SQL error code ['||sqlcode||']');
-        DBMS_OUTPUT.PUT_LINE('error message ['||sqlerrm||']');
+        IF SQL%NOTFOUND THEN
+            DBMS_OUTPUT.PUT_LINE('CANNOT FOUND');
+        END IF;
 END;
 /
 
---특정 에러
+
 DECLARE
-    VI_NUM NUMBER :=0;
+    VS_NAME EMPLOYEES.EMP_NAME%TYPE;
 BEGIN
-    VI_NUM := 10/0;
-    DBMS_OUTPUT.PUT_LINE('SUCCESS');
+    SELECT EMP_NAME INTO VS_NAME FROM EMPLOYEES
+    WHERE MANAGER_ID IS NULL;
+    DBMS_OUTPUT.PUT_LINE(VS_NAME||', 인원수['||SQL%ROWCOUNT||'}');
     
-    EXCEPTION WHEN zero_divide THEN
-        DBMS_OUTPUT.PUT_LINE('오류발생 - Divided by ZERO');
-        DBMS_OUTPUT.PUT_LINE('SQL error code ['||sqlcode||']');
-        DBMS_OUTPUT.PUT_LINE('error message ['||sqlerrm||']');
-    WHEN invalid_number THEN
-    
-    WHEN  ..... THEN
-    
+    EXCEPTION WHEN OTHERS THEN
+        IF SQL%NOTFOUND THEN
+            DBMS_OUTPUT.PUT_LINE('CANNOT FOUND');
+        END IF;
 END;
 /
-
-/*사용자 정의 예외처리
-DECLARE
-    myExcept EXCEPTION;
-BEGIN
-    ...
-    IF ~ THEN
-        RAISE myExcept; -> 일부로 예외 발생시킴
-    END IF;
-    .....
-    EXCEPTION WHEN ... THEN
-        실행문;
-    WHEN myExcept THEN
-        실행문;
-end;
-*/
