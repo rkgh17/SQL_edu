@@ -110,3 +110,32 @@ begin
     dbms_output.put_line('부서명 = '||department_name||'['||dep_id||']');
 end;
 /
+
+
+
+
+
+-- 실행은 안됨, IN과 OUT의 예시
+CREATE OR REPLACE PROCEDURE PRAC(
+    a IN NUMBER,
+    b OUT NUMBER,
+    c IN OUT NUMBER)
+IS
+BEGIN
+    DBMS_OUTPUT.PUT_LINE(a||','||b||','||c);
+    a:=1;
+    b:=2;
+    c:=3;
+    DBMS_OUTPUT.PUT_LINE(a||','||b||','||c);
+END;
+/
+
+DECLARE
+    x number:=10;
+    y number:=20;
+    z number:=30;
+begin
+    PRAC(x,y,z);
+    DBMS_OUTPUT.PUT_LINE(x||','||y||','||z);
+end;
+/
