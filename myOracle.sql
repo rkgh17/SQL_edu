@@ -22,10 +22,86 @@ BEGIN
 END;
 /
 
-
-SELECT B.DEPARTMENT_NAME, A.DEPARTMENT_ID, COUNT(A.DEPARTMENT_ID), SUM(A.SALARY) 
+--VER2
+DECLARE
+    CURSOR C1
+    IS
+        SELECT B.DEPARTMENT_NAME AS 부서명, A.DEPARTMENT_ID AS 부서코드, COUNT(A.DEPARTMENT_ID) AS 인원수, SUM(A.SALARY) AS 월급합계
             FROM EMPLOYEES A, DEPARTMENTS B 
             WHERE A.DEPARTMENT_ID = B.DEPARTMENT_ID
             GROUP BY B.DEPARTMENT_NAME, A.DEPARTMENT_ID
             ORDER BY A.DEPARTMENT_ID;
-        
+BEGIN
+    FOR REC IN C1
+    LOOP
+        DBMS_OUTPUT.PUT_LINE('부서명 : ['||REC.부서명||']  부서코드 : ['||REC.부서코드||']  인원수 : ['||REC.인원수||'명]  월급 합계 : ['||REC.월급합계||']');
+    END LOOP;
+END;
+/
+
+--VER3
+DECLARE
+BEGIN
+    FOR REC IN (SELECT B.DEPARTMENT_NAME AS 부서명, A.DEPARTMENT_ID AS 부서코드, COUNT(A.DEPARTMENT_ID) AS 인원수, SUM(A.SALARY) AS 월급합계
+            FROM EMPLOYEES A, DEPARTMENTS B 
+            WHERE A.DEPARTMENT_ID = B.DEPARTMENT_ID
+            GROUP BY B.DEPARTMENT_NAME, A.DEPARTMENT_ID
+            ORDER BY A.DEPARTMENT_ID)
+    LOOP
+        DBMS_OUTPUT.PUT_LINE('부서명 : ['||REC.부서명||']  부서코드 : ['||REC.부서코드||']  인원수 : ['||REC.인원수||'명]  월급 합계 : ['||REC.월급합계||']');
+    END LOOP;
+END;
+/
+
+                 
+-- 직원별 매출총액
+DECLARE
+    VS_NAME EMPLOYEES.EMP_NAME%TYPE;
+    VS_SALES SALES.AMOUNT_SOLD%TYPE;
+    CURSOR C1 IS
+    SELECT A.EMP_NAME, SUM(B.AMOUNT_SOLD) AS 매출합
+    FROM EMPLOYEES A, SALES B
+    WHERE A.EMPLOYEE_ID = B.EMPLOYEE_ID
+    GROUP BY A.EMP_NAME
+    ORDER BY 매출합 DESC;
+BEGIN
+    OPEN C1;
+    LOOP
+        FETCH C1 INTO VS_NAME, VS_SALES;
+        EXIT WHEN C1%NOTFOUND;
+        DBMS_OUTPUT.PUT_LINE('직원이름 : ['||VS_NAME||'] 매출합계 : '||VS_SALES);
+    END LOOP;
+END;
+/
+
+
+
+
+-- 프로시저로활용
+CREATE OR REPLACE PROCEDURE getOutgo
+is
+    VS_NAME EMPLOYEES.EMP_NAME%TYPE;
+    VS_SALES SALES.AMOUNT_SOLD%TYPE;
+    CURSOR C1 IS
+        SELECT A.EMP_NAME, SUM(B.AMOUNT_SOLD) AS 매출합
+        FROM EMPLOYEES A, SALES B
+        WHERE A.EMPLOYEE_ID = B.EMPLOYEE_ID
+        GROUP BY A.EMP_NAME
+        ORDER BY 매출합 DESC;
+BEGIN
+    OPEN C1;
+    LOOP
+        FETCH C1 INTO VS_NAME, VS_SALES;
+        EXIT WHEN C1%NOTFOUND;
+        DBMS_OUTPUT.PUT_LINE('직원이름 : ['||VS_NAME||'] 매출합계 : '||VS_SALES);
+        insert into outcome values (VS_NAME, VS_SALES);
+    END LOOP;
+END;
+/
+
+create table outcome (name varchar2(32), total number);
+execute getOutgo;
+select * from outcome;
+
+
+
