@@ -29,38 +29,66 @@ BEGIN
 END;
 /
 
---FOR
 DECLARE
     VS_HIRE VARCHAR2(100);
     VS_CNT NUMBER;
     CURSOR C1
     IS
-        SELECT *
-        FROM(
+    
             SELECT SUBSTR(TO_CHAR(HIRE_DATE,'yyyy-mm-dd'),1,4) AS 입사년도, COUNT(*) AS 인원수
             FROM EMPLOYEES 
             group by SUBSTR(TO_CHAR(HIRE_DATE,'yyyy-mm-dd'),1,4)
-            )
+
         ORDER BY 입사년도;
 BEGIN
-    FOR REC IN C1
+    OPEN C1;
     LOOP
-        DBMS_OUTPUT.PUT_LINE('입사년도 : ['||REC.입사년도||'] 인원수 : ['||REC.인원수||']');
+        FETCH C1 INTO VS_HIRE, VS_CNT;
+        EXIT WHEN C1%NOTFOUND;
+        DBMS_OUTPUT.PUT_LINE('입사년도 : ['||VS_HIRE||'] 인원수 : ['||VS_CNT||']');
     END LOOP;
+    CLOSE C1;
 END;
 /
 
+-- 사원번호, 이름, 직위명 107명 모두
+SELECT a.EMPLOYEE_ID AS 사원번호, a.EMP_NAME AS 이름, b.JOB_TITLE AS 직위명
+FROM EMPLOYEES a, JOBS b
+WHERE a.JOB_ID = b.JOB_ID (+)
+ORDER BY 사원번호;
 
-DECLARE
-BEGIN
-    FOR REC IN (SELECT *
-                    FROM (
-                        SELECT SUBSTR(TO_CHAR(HIRE_DATE,'yyyy-mm-dd'),1,4) AS 입사년도, COUNT(*) AS 인원수
-                        FROM EMPLOYEES 
-                        group by SUBSTR(TO_CHAR(HIRE_DATE,'yyyy-mm-dd'),1,4))
-                    ORDER BY 입사년도)
-    LOOP
-        DBMS_OUTPUT.PUT_LINE('입사년도 : ['||REC.입사년도||'] 인원수 : ['||REC.인원수||']');
-    END LOOP;
-END;
-/
+-- 부서명, 부서장이름, 부서원숫자
+SELECT A.DEPARTMENT_NAME AS 부서명, B.EMP_NAME 부서장, COUNT(C.EMP_NAME) AS 부서원수
+FROM DEPARTMENTS A, EMPLOYEES B, EMPLOYEES C
+WHERE B.EMPLOYEE_ID = A.MANAGER_ID AND A.DEPARTMENT_ID = C.DEPARTMENT_ID
+GROUP BY A.DEPARTMENT_NAME, B.EMP_NAME;
+
+-- 부서명, 부서장이름, 평균 월급이상인 부서원숫자
+SELECT A.DEPARTMENT_NAME AS 부서명, B.EMP_NAME 부서장, COUNT(C.EMP_NAME) AS 부서원수
+FROM DEPARTMENTS A, 
+            EMPLOYEES B, 
+            (SELECT EMP_NAME, DEPARTMENT_ID FROM EMPLOYEES WHERE SALARY>=(SELECT AVG(SALARY) FROM EMPLOYEES)) C
+WHERE B.EMPLOYEE_ID = A.MANAGER_ID AND A.DEPARTMENT_ID = C.DEPARTMENT_ID 
+GROUP BY A.DEPARTMENT_NAME, B.EMP_NAME;
+
+-- 고객별 상품별 매입액 : 고객명, 상품명, 매입총액
+SELECT B.CUST_NAME, C.PROD_NAME, SUM(A.AMOUNT_SOLD)
+FROM SALES A, CUSTOMERS B, PRODUCTS C
+WHERE A.CUST_ID=B.CUST_ID AND A.PROD_ID = C.PROD_ID
+GROUP BY B.CUST_NAME, C.PROD_NAME
+ORDER BY B.CUST_NAME;
+
+-- 고객명,  구매한 상품명
+SELECT B.CUST_NAME, C.PROD_NAME
+FROM    SALES A, 
+            CUSTOMERS B, 
+            PRODUCTS C
+WHERE A.CUST_ID = B.CUST_ID AND A.PROD_ID = C.PROD_ID
+ORDER BY B.CUST_NAME;
+
+-- 상품별 매출액
+SELECT PROD_NAME, SUM(AMOUNT_SOLD)
+FROM PRODUCTS C, SALES A
+WHERE A.PROD_ID = C.PROD_ID
+GROUP BY PROD_NAME;
+
